@@ -35,6 +35,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 
 using System.Text.RegularExpressions;
+using Microsoft.Win32;
 using NLog;
 
 namespace PS3BluMote
@@ -89,6 +90,11 @@ namespace PS3BluMote
 
             cbSms.Checked = model.Settings.smsinput;
             cbDebugMode.Checked = model.Settings.debug;
+
+			var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+			if (key.GetValue("PS3BluMote") != null && key.GetValue("PS3BluMote").Equals(System.Reflection.Assembly.GetEntryAssembly().Location)) {
+				cbStartup.Checked = true;
+			}
 
             txtRepeatInterval.Text = model.Settings.repeatinterval.ToString();
 
@@ -458,6 +464,16 @@ namespace PS3BluMote
         {
             if (keyboard != null) keyboard.isSmsEnabled = cbSms.Checked;
         }
+
+		private void cbStartup_CheckedChanged(object sender, EventArgs e)
+		{
+			var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+			if (cbStartup.Checked) {
+				key.SetValue("PS3BluMote", System.Reflection.Assembly.GetEntryAssembly().Location);
+			} else if (key.GetValue("PS3BlueMote") != null) {
+				key.DeleteValue("PS3BluMote");
+			}
+		}
 
         private void llblOpenFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {

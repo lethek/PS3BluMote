@@ -58,6 +58,7 @@ namespace PS3BluMote
 			this.TabControl = new System.Windows.Forms.TabControl();
 			this.tabMappings = new System.Windows.Forms.TabPage();
 			this.groupBox5 = new System.Windows.Forms.GroupBox();
+			this.cbStartup = new System.Windows.Forms.CheckBox();
 			this.txtRepeatInterval = new System.Windows.Forms.TextBox();
 			this.lblRepeatInterval = new System.Windows.Forms.Label();
 			this.llblOpenFolder = new System.Windows.Forms.LinkLabel();
@@ -209,6 +210,7 @@ namespace PS3BluMote
 			// 
 			// groupBox5
 			// 
+			this.groupBox5.Controls.Add(this.cbStartup);
 			this.groupBox5.Controls.Add(this.txtRepeatInterval);
 			this.groupBox5.Controls.Add(this.lblRepeatInterval);
 			this.groupBox5.Controls.Add(this.llblOpenFolder);
@@ -222,9 +224,20 @@ namespace PS3BluMote
 			this.groupBox5.TabStop = false;
 			this.groupBox5.Text = "Settings";
 			// 
+			// cbStartup
+			// 
+			this.cbStartup.AutoSize = true;
+			this.cbStartup.Location = new System.Drawing.Point(6, 45);
+			this.cbStartup.Name = "cbStartup";
+			this.cbStartup.Size = new System.Drawing.Size(95, 17);
+			this.cbStartup.TabIndex = 8;
+			this.cbStartup.Text = "Run at Startup";
+			this.cbStartup.UseVisualStyleBackColor = true;
+			this.cbStartup.CheckedChanged += new System.EventHandler(this.cbStartup_CheckedChanged);
+			// 
 			// txtRepeatInterval
 			// 
-			this.txtRepeatInterval.Location = new System.Drawing.Point(171, 87);
+			this.txtRepeatInterval.Location = new System.Drawing.Point(171, 118);
 			this.txtRepeatInterval.Name = "txtRepeatInterval";
 			this.txtRepeatInterval.Size = new System.Drawing.Size(46, 20);
 			this.txtRepeatInterval.TabIndex = 20;
@@ -234,7 +247,7 @@ namespace PS3BluMote
 			// lblRepeatInterval
 			// 
 			this.lblRepeatInterval.AutoSize = true;
-			this.lblRepeatInterval.Location = new System.Drawing.Point(6, 91);
+			this.lblRepeatInterval.Location = new System.Drawing.Point(6, 122);
 			this.lblRepeatInterval.Name = "lblRepeatInterval";
 			this.lblRepeatInterval.Size = new System.Drawing.Size(144, 13);
 			this.lblRepeatInterval.TabIndex = 19;
@@ -243,7 +256,7 @@ namespace PS3BluMote
 			// llblOpenFolder
 			// 
 			this.llblOpenFolder.AutoSize = true;
-			this.llblOpenFolder.Location = new System.Drawing.Point(22, 66);
+			this.llblOpenFolder.Location = new System.Drawing.Point(22, 91);
 			this.llblOpenFolder.Name = "llblOpenFolder";
 			this.llblOpenFolder.Size = new System.Drawing.Size(79, 13);
 			this.llblOpenFolder.TabIndex = 17;
@@ -256,7 +269,7 @@ namespace PS3BluMote
 			// cbDebugMode
 			// 
 			this.cbDebugMode.AutoSize = true;
-			this.cbDebugMode.Location = new System.Drawing.Point(6, 43);
+			this.cbDebugMode.Location = new System.Drawing.Point(6, 71);
 			this.cbDebugMode.Name = "cbDebugMode";
 			this.cbDebugMode.Size = new System.Drawing.Size(171, 17);
 			this.cbDebugMode.TabIndex = 16;
@@ -270,10 +283,10 @@ namespace PS3BluMote
 			this.gbAdvanced.Controls.Add(this.txtProductId);
 			this.gbAdvanced.Controls.Add(this.lblVendorId);
 			this.gbAdvanced.Controls.Add(this.lblProductId);
-			this.gbAdvanced.Location = new System.Drawing.Point(6, 113);
+			this.gbAdvanced.Location = new System.Drawing.Point(6, 154);
 			this.gbAdvanced.Name = "gbAdvanced";
 			this.gbAdvanced.Padding = new System.Windows.Forms.Padding(6, 7, 6, 7);
-			this.gbAdvanced.Size = new System.Drawing.Size(260, 211);
+			this.gbAdvanced.Size = new System.Drawing.Size(260, 169);
 			this.gbAdvanced.TabIndex = 15;
 			this.gbAdvanced.TabStop = false;
 			this.gbAdvanced.Text = "Advanced";
@@ -282,11 +295,13 @@ namespace PS3BluMote
 			// lblRemoteCodes
 			// 
 			this.lblRemoteCodes.AutoSize = true;
-			this.lblRemoteCodes.Location = new System.Drawing.Point(9, 114);
+			this.lblRemoteCodes.Location = new System.Drawing.Point(22, 80);
 			this.lblRemoteCodes.Name = "lblRemoteCodes";
-			this.lblRemoteCodes.Size = new System.Drawing.Size(199, 91);
+			this.lblRemoteCodes.Size = new System.Drawing.Size(187, 78);
 			this.lblRemoteCodes.TabIndex = 3;
-			this.lblRemoteCodes.Text = resources.GetString("lblRemoteCodes.Text");
+			this.lblRemoteCodes.Text = "Official Sony PS3 Blutetooth remote:\r\n    PID: 0x0306    VID: 0x054c\r\nSMK Blu-Lin" +
+    "k VP3700:\r\n    PID: 0x0306    VID: 0x0609\r\nLogitech Harmony (with PS3 Adapter):\r" +
+    "\n    PID: 0x0306    VID: 0x046d";
 			// 
 			// txtVendorId
 			// 
@@ -1123,5 +1138,6 @@ namespace PS3BluMote
         private System.Windows.Forms.RadioButton rbOsdRemoteButtonPressAssigned;
         private System.Windows.Forms.RadioButton rbOsdRemoteButtonPressAlways;
         private System.Windows.Forms.CheckBox cbOsdRemoteButtonPress;
-    }
+		private System.Windows.Forms.CheckBox cbStartup;
+	}
 }
