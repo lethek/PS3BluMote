@@ -634,7 +634,11 @@ namespace PS3BluMote
 
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
-            Show();
+	        if (Visible) {
+		        Hide();
+	        } else {
+		        Show();
+	        }
         }
 
         private void menuNotifyIcon_ItemClick(object sender, EventArgs e)
