@@ -1,4 +1,6 @@
 PS3BluMote  -  Copyright (c) 2012 Ben Barron
+Hibernation Support By Miljbee using InTheHand.Net Library
+2014 gridgem
 
 (Formally named "PS3 Remote Application")
 
@@ -88,11 +90,21 @@ You then assign the same keyboard shortcut to a remote button in PS3BluMote
 and everytime you press the button it will open the application.
 
 
----> The hibernation feature is disabled, is there any way to save battery use?
+---> How hibernation works ?
 
-Many people have reported a program called Ps3RemoteSleep works to disconnect the
-remote. It is a program that you can assign a keyboard shortcut to (see the above
-question) and assign a button on your remote to execute it to disable the remote.
+PS3BluMote will try to hibernate the remote as soon as it hasn't receive any events from the remote since some time.
+The amount of time to wait before hibernating the remote can be changed in the settings screen.
+
+To hibernate the remote, PS3BluMote uses the same method as the one implemented in PS3RemoteSleep. It disables the 
+HID Service attached to the remote then reenables it.
+Note that this method takes some time (up to 20s). During this time PS3BluMote won't receive any event from
+the remote. So don't set a too short value in the settings screen.
+
+When the remote is hibernated, pressing any key will wake it up. PS3BluMote will get this key with a 500-1000ms delay.
+
+You can also manually hibernate the remote by holding it's PS button for more than 6s.
+
+When the remote is hibernated, the PS3BluMoteIcon in the task bar will become light blue.
 
 Ps3RemoteSleep is available here: http://ps3remotesleep.codeplex.com/
 
@@ -118,7 +130,7 @@ here: Http://www.benbarron.com/contact
 
 COMPILING:
 
-You can obtain the source code from: https://github.com/Ben-Barron/PS3BluMote.
+You can obtain the source code from: https://github.com/miljbee/PS3BluMote.
 
 Simply download the source, open the solution in Visual Studios (preferably 2010)
 and Build the project.

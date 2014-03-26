@@ -46,7 +46,7 @@ namespace PS3BluMote
         private bool isButtonDown = false;
         private bool _hibernationEnabled;
 
-        private byte _batteryLife = 100;
+        private byte _batteryLife = 101;
 
         #region "Remote button codes"
         static byte[][] buttonCodes = 
@@ -134,6 +134,14 @@ namespace PS3BluMote
         {
             get { return _batteryLife; }
         }
+
+	    public string getBatteryLifeString()
+	    {
+		    if (_batteryLife > 100) {
+			    return "Unknown";
+		    }
+		    return getBatteryLife + "%";
+	    }
 
         public bool isConnected
         {

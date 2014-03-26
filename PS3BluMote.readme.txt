@@ -1,0 +1,96 @@
+PS3BluMote Release Notes
+
+PS3BluMote has been partially coded by miljbee with the great help of the InTheHand.Net libraries.
+Please read the InTheHand.Net.Licence.txt file.
+
+The original PS3BluMote App was initially coded by BenBarron http://benbarron.com/applications
+I have added the hibernation Code.
+The method used is the same as the one used by PS3RemoteSleep from riaanc http://ps3remotesleep.codeplex.com/
+
+Concerning my code, do what you want with it, but please, be kind enough to mention me, or to send me your work or improvements.
+The source code is available on GitHub : https://github.com/miljbee/PS3BluMote
+
+The usual warnings applies, do what you want with that, but don't expect any support from me, even if it blows your hardware.
+If you feel generous, my paypal account is miljbee@gmail.com
+
+miljbee@gmail.com
+
+-----
+Ver. 2.2 partially coded by gridgem
+
+[New Features]
+- add multiple key mappings (assigned by active window title)
+- add setting key mappings from keyboard (except some keys)
+- add OSD (On-Screen Display)
+
+[Changes]
+- change ini file format.
+- change key names ("Left_Menu" to "Left_Alt", "Right_Menu" to "Right_Alt").
+- disable multiple starts.
+
+[About multiple mappings]
+The key mapping is selected by the active window title.
+It tries to match from the top of the list ("Settings" tab, "Mappings" area) 
+to bottom.
+You can use regular expression ("regex") to the condition.
+
+Once the active window title is matched to a mapping condition,
+it does NOT pass through down to next mapping even there's no key assign.
+For example, a mapping which has the condition as ".*" is middle of the list
+(".*" matches any strings including empty string), mappings under the mapping
+will NEVER be matched.
+
+Be careful to the default mapping "General" which condition is ".*".
+
+[About keyboard input]
+You can set key settings from the keyboard except some keys and combinations.
+If you want to set keys which isn't on your keyboard, you can use checkboxes
+as same as before.
+
+You can't set keys below from the keyboard.
+Enter, Delete, Back Space, Arrow Up and Arrow Down.
+(These keys move focus or delete foucused setting.)
+
+And some key combinations (like Ctrl + Alt + Del) will not be prevented.
+
+[About OSD (On-Screen Display)]
+OSD is always inactive, though it's shown generally top the most.
+It does not steal the focus and you can't click or drag.
+I couldn't display OSD over ALL applications (like Task Manager or some 
+full screen aplication like XBMC).
+
+When you use animation, showing time will be extended for the time to animate.
+If you set "Time to display text" as 2200 (2.2 seconds) and "Time to animate" 
+as 400 (0.4 seconds), OSD displays for 3 seconds (3000 milli-seconds) because 
+it is the sum of 400 (show animate) + 2200 ("Time to display text") + 400 
+(disappear animate).
+
+[About ini file]
+I can't help changing ini file format.
+For the first time you execute this version (2.2), it tries to convert ini file
+to preserve mappings you have set.
+The original ini file will be renamed as "settings2.0.ini" on the same folder
+ (and it shows dialog).
+C:\Users\[user name]\AppData\Local\PS3BluMote
+
+[About version number]
+I set it as 2.2.0 because miljbee's version displays as 2.1.0.
+(Though I know it is known as 2.0.4 and internally set property as so.)
+
+[About hibernation]
+I didn't touch the function (It works very well for me).
+
+[Thanks to]
+Ben Barron
+miljbee
+
+keyboard hook:
+"Disable Special Keys in Win App C#"
+http://geekswithblogs.net/aghausman/archive/2009/04/26/disable-special-keys-in-win-app-c.aspx
+
+OSD:
+"OSD window with animation effect, in C# by Mr.Smarty"
+http://www.codeproject.com/Articles/12597/OSD-window-with-animation-effect-in-C
+
+(and some books, sites, codes and people)
+

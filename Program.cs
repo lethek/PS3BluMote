@@ -29,6 +29,9 @@ namespace PS3BluMote
         [STAThread]
         static void Main()
         {
+            System.Threading.Mutex mutex = new System.Threading.Mutex(false, "PS3BluMote");
+            if (mutex.WaitOne(0, false) == false) return;
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
