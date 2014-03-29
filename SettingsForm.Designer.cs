@@ -217,14 +217,14 @@ namespace PS3BluMote
 			this.groupBox5.Controls.Add(this.cbSms);
 			this.groupBox5.Location = new System.Drawing.Point(293, 7);
 			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(272, 391);
+			this.groupBox5.Size = new System.Drawing.Size(272, 329);
 			this.groupBox5.TabIndex = 10;
 			this.groupBox5.TabStop = false;
 			this.groupBox5.Text = "Settings";
 			// 
 			// txtRepeatInterval
 			// 
-			this.txtRepeatInterval.Location = new System.Drawing.Point(171, 147);
+			this.txtRepeatInterval.Location = new System.Drawing.Point(171, 87);
 			this.txtRepeatInterval.Name = "txtRepeatInterval";
 			this.txtRepeatInterval.Size = new System.Drawing.Size(46, 20);
 			this.txtRepeatInterval.TabIndex = 20;
@@ -234,7 +234,7 @@ namespace PS3BluMote
 			// lblRepeatInterval
 			// 
 			this.lblRepeatInterval.AutoSize = true;
-			this.lblRepeatInterval.Location = new System.Drawing.Point(6, 151);
+			this.lblRepeatInterval.Location = new System.Drawing.Point(6, 91);
 			this.lblRepeatInterval.Name = "lblRepeatInterval";
 			this.lblRepeatInterval.Size = new System.Drawing.Size(144, 13);
 			this.lblRepeatInterval.TabIndex = 19;
@@ -243,7 +243,7 @@ namespace PS3BluMote
 			// llblOpenFolder
 			// 
 			this.llblOpenFolder.AutoSize = true;
-			this.llblOpenFolder.Location = new System.Drawing.Point(23, 122);
+			this.llblOpenFolder.Location = new System.Drawing.Point(22, 66);
 			this.llblOpenFolder.Name = "llblOpenFolder";
 			this.llblOpenFolder.Size = new System.Drawing.Size(79, 13);
 			this.llblOpenFolder.TabIndex = 17;
@@ -256,7 +256,7 @@ namespace PS3BluMote
 			// cbDebugMode
 			// 
 			this.cbDebugMode.AutoSize = true;
-			this.cbDebugMode.Location = new System.Drawing.Point(6, 98);
+			this.cbDebugMode.Location = new System.Drawing.Point(6, 43);
 			this.cbDebugMode.Name = "cbDebugMode";
 			this.cbDebugMode.Size = new System.Drawing.Size(171, 17);
 			this.cbDebugMode.TabIndex = 16;
@@ -270,7 +270,7 @@ namespace PS3BluMote
 			this.gbAdvanced.Controls.Add(this.txtProductId);
 			this.gbAdvanced.Controls.Add(this.lblVendorId);
 			this.gbAdvanced.Controls.Add(this.lblProductId);
-			this.gbAdvanced.Location = new System.Drawing.Point(6, 174);
+			this.gbAdvanced.Location = new System.Drawing.Point(6, 113);
 			this.gbAdvanced.Name = "gbAdvanced";
 			this.gbAdvanced.Padding = new System.Windows.Forms.Padding(6, 7, 6, 7);
 			this.gbAdvanced.Size = new System.Drawing.Size(260, 211);
