@@ -22,7 +22,6 @@ Hibernation Code provided and integrated by Miljbee (miljbee@gmail.com)
 */
 
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 using WindowsAPI;
