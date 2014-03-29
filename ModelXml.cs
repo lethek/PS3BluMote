@@ -163,7 +163,7 @@ namespace PS3BluMote
             caseSensitive = false;
             buttonMappings = new ButtonMapping[56];
 
-            string[] buttonNames = Enum.GetNames(typeof(PS3Remote.Button));
+            string[] buttonNames = Enum.GetNames(typeof(ButtonType));
             for (int i = 0; i < buttonNames.Length; i++)
             {
                 buttonMappings[i] = new ButtonMapping();

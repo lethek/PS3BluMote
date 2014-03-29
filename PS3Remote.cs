@@ -43,73 +43,75 @@ namespace PS3BluMote
         private Timer timerHibernation = null;
         private int vendorId = 0x054c;
         private int productId = 0x0306;
-        private Button lastButton = Button.Angle;
+        private ButtonType lastButton = ButtonType.Angle;
         private bool isButtonDown = false;
-        private bool _hibernationEnabled;
 
-        private byte _batteryLife = 101;
+	    private static readonly Dictionary<ButtonCode, ButtonType> buttonCodes =  new Dictionary<ButtonCode, ButtonType>() {
+	        { new ButtonCode(0, 0, 0, 22), ButtonType.Eject },     //Eject
+	        { new ButtonCode(0, 0, 0, 100), ButtonType.Audio },    //Audio
+	        { new ButtonCode(0, 0, 0, 101), ButtonType.Angle },   //Angle
+	        { new ButtonCode(0, 0, 0, 99), ButtonType.Subtitle },     //Subtitle
+	        { new ButtonCode(0, 0, 0, 15), ButtonType.Clear },     //Clear
+	        { new ButtonCode(0, 0, 0, 40), ButtonType.Time },     //Time
+	        { new ButtonCode(0, 0, 0, 0), ButtonType.NUM_1 },      //NUM_1
+	        { new ButtonCode(0, 0, 0, 1), ButtonType.NUM_2 },      //NUM_2
+	        { new ButtonCode(0, 0, 0, 2), ButtonType.NUM_3 },      //NUM_3
+	        { new ButtonCode(0, 0, 0, 3), ButtonType.NUM_4 },      //NUM_4
+	        { new ButtonCode(0, 0, 0, 4), ButtonType.NUM_5 },      //NUM_5
+	        { new ButtonCode(0, 0, 0, 5), ButtonType.NUM_6 },      //NUM_6
+	        { new ButtonCode(0, 0, 0, 6), ButtonType.NUM_7 },      //NUM_7
+	        { new ButtonCode(0, 0, 0, 7), ButtonType.NUM_8 },      //NUM_8
+	        { new ButtonCode(0, 0, 0, 8), ButtonType.NUM_9 },      //NUM_9
+	        { new ButtonCode(0, 0, 0, 9), ButtonType.NUM_0 },      //NUM_0
+	        { new ButtonCode(0, 0, 0, 128), ButtonType.Blue },    //Blue
+	        { new ButtonCode(0, 0, 0, 129), ButtonType.Red },    //Red
+	        { new ButtonCode(0, 0, 0, 130), ButtonType.Green },    //Green
+	        { new ButtonCode(0, 0, 0, 131), ButtonType.Yellow },    //Yellow
+	        { new ButtonCode(0, 0, 0, 112), ButtonType.Display },    //Display
+	        { new ButtonCode(0, 0, 0, 26), ButtonType.Top_Menu },     //Top_Menu
+	        { new ButtonCode(0, 0, 0, 64), ButtonType.PopUp_Menu },     //PopUp_Menu
+	        { new ButtonCode(0, 0, 0, 14), ButtonType.Return },     //Return
+	        { new ButtonCode(0, 16, 0, 92), ButtonType.Triangle },    //Triangle
+	        { new ButtonCode(0, 32, 0, 93), ButtonType.Circle },    //Circle
+	        { new ButtonCode(0, 128, 0, 95), ButtonType.Square },   //Square
+	        { new ButtonCode(0, 64, 0, 94), ButtonType.Cross },    //Cross
+	        { new ButtonCode(16, 0, 0, 84), ButtonType.Arrow_Up },    //Arrow_Up
+	        { new ButtonCode(64, 0, 0, 86), ButtonType.Arrow_Down },    //Arrow_Down
+	        { new ButtonCode(128, 0, 0, 87), ButtonType.Arrow_Left },   //Arrow_Left
+	        { new ButtonCode(32, 0, 0, 85), ButtonType.Arrow_Right },    //Arrow_Right
+	        { new ButtonCode(0, 0, 8, 11), ButtonType.Enter },     //Enter
+	        { new ButtonCode(0, 4, 0, 90), ButtonType.L1 },     //L1
+	        { new ButtonCode(0, 1, 0, 88), ButtonType.L2 },     //L2
+	        { new ButtonCode(2, 0, 0, 81), ButtonType.L3 },     //L3
+	        { new ButtonCode(0, 8, 0, 91), ButtonType.R1 },     //R1
+	        { new ButtonCode(0, 2, 0, 89), ButtonType.R2 },     //R2
+	        { new ButtonCode(4, 0, 0, 82), ButtonType.R3 },     //R3
+	        { new ButtonCode(0, 0, 1, 67), ButtonType.Playstation },     //Playstation
+	        { new ButtonCode(1, 0, 0, 80), ButtonType.Select },     //Select
+	        { new ButtonCode(8, 0, 0, 83), ButtonType.Start },     //Start
+	        { new ButtonCode(0, 0, 0, 50), ButtonType.Play },     //Play
+	        { new ButtonCode(0, 0, 0, 56), ButtonType.Stop },     //Stop
+	        { new ButtonCode(0, 0, 0, 57), ButtonType.Pause },     //Pause
+	        { new ButtonCode(0, 0, 0, 51), ButtonType.Scan_Back },     //Scan_Back
+	        { new ButtonCode(0, 0, 0, 52), ButtonType.Scan_Forward },     //Scan_Forward
+	        { new ButtonCode(0, 0, 0, 48), ButtonType.Prev },     //Prev
+	        { new ButtonCode(0, 0, 0, 49), ButtonType.Next },     //Next
+	        { new ButtonCode(0, 0, 0, 96), ButtonType.Step_Back },     //Step_Back
+	        { new ButtonCode(0, 0, 0, 97), ButtonType.Step_Forward },     //Step_Forward
+            { new ButtonCode(0, 0, 0, 118), ButtonType.Instant_Back },    //instant back
+            { new ButtonCode(0, 0, 0, 117), ButtonType.Instant_Forward },    //instant fwd
+            { new ButtonCode(0, 0, 0, 16), ButtonType.Channel_Up },     //channel up
+            { new ButtonCode(0, 0, 0, 17), ButtonType.Channel_Down },     //channel down
+            { new ButtonCode(0, 0, 0, 12), ButtonType.dash_slash_dash_dash }      // "-/--" dash_slash_dash_dash
+	    };
 
-        #region "Remote button codes"
-        static byte[][] buttonCodes = 
-        {
-	        new byte[] { 0, 0, 0, 22 },     //Eject
-	        new byte[] { 0, 0, 0, 100 },    //Audio
-	        new byte[] { 0, 0, 0, 101 },    //Angle
-	        new byte[] { 0, 0, 0, 99 },     //Subtitle
-	        new byte[] { 0, 0, 0, 15 },     //Clear
-	        new byte[] { 0, 0, 0, 40 },     //Time
-	        new byte[] { 0, 0, 0, 0 },      //NUM_1
-	        new byte[] { 0, 0, 0, 1 },      //NUM_2
-	        new byte[] { 0, 0, 0, 2 },      //NUM_3
-	        new byte[] { 0, 0, 0, 3 },      //NUM_4
-	        new byte[] { 0, 0, 0, 4 },      //NUM_5
-	        new byte[] { 0, 0, 0, 5 },      //NUM_6
-	        new byte[] { 0, 0, 0, 6 },      //NUM_7
-	        new byte[] { 0, 0, 0, 7 },      //NUM_8
-	        new byte[] { 0, 0, 0, 8 },      //NUM_9
-	        new byte[] { 0, 0, 0, 9 },      //NUM_0
-	        new byte[] { 0, 0, 0, 128 },    //Blue
-	        new byte[] { 0, 0, 0, 129 },    //Red
-	        new byte[] { 0, 0, 0, 130 },    //Green
-	        new byte[] { 0, 0, 0, 131 },    //Yellow
-	        new byte[] { 0, 0, 0, 112 },    //Display
-	        new byte[] { 0, 0, 0, 26 },     //Top_Menu
-	        new byte[] { 0, 0, 0, 64 },     //PopUp_Menu
-	        new byte[] { 0, 0, 0, 14 },     //Return
-	        new byte[] { 0, 16, 0, 92 },    //Triangle
-	        new byte[] { 0, 32, 0, 93 },    //Circle
-	        new byte[] { 0, 128, 0, 95 },   //Square
-	        new byte[] { 0, 64, 0, 94 },    //Cross
-	        new byte[] { 16, 0, 0, 84 },    //Arrow_Up
-	        new byte[] { 64, 0, 0, 86 },    //Arrow_Down
-	        new byte[] { 128, 0, 0, 87 },   //Arrow_Left
-	        new byte[] { 32, 0, 0, 85 },    //Arrow_Right
-	        new byte[] { 0, 0, 8, 11 },     //Enter
-	        new byte[] { 0, 4, 0, 90 },     //L1
-	        new byte[] { 0, 1, 0, 88 },     //L2
-	        new byte[] { 2, 0, 0, 81 },     //L3
-	        new byte[] { 0, 8, 0, 91 },     //R1
-	        new byte[] { 0, 2, 0, 89 },     //R2
-	        new byte[] { 4, 0, 0, 82 },     //R3
-	        new byte[] { 0, 0, 1, 67 },     //Playstation
-	        new byte[] { 1, 0, 0, 80 },     //Select
-	        new byte[] { 8, 0, 0, 83 },     //Start
-	        new byte[] { 0, 0, 0, 50 },     //Play
-	        new byte[] { 0, 0, 0, 56 },     //Stop
-	        new byte[] { 0, 0, 0, 57 },     //Pause
-	        new byte[] { 0, 0, 0, 51 },     //Scan_Back
-	        new byte[] { 0, 0, 0, 52 },     //Scan_Forward
-	        new byte[] { 0, 0, 0, 48 },     //Prev
-	        new byte[] { 0, 0, 0, 49 },     //Next
-	        new byte[] { 0, 0, 0, 96 },     //Step_Back
-	        new byte[] { 0, 0, 0, 97 },     //Step_Forward
-            new byte[] { 0, 0, 0, 118 },    //instant back
-            new byte[] { 0, 0, 0, 117 },    //instant fwd
-            new byte[] { 0, 0, 0, 16 },     //channel up
-            new byte[] { 0, 0, 0, 17 },     //channel down
-            new byte[] { 0, 0, 0, 12 }      // "-/--" dash_slash_dash_dash
-        };
-        #endregion
+	    private bool _hibernationEnabled;
+
+	    private byte _batteryLife = 101;
+
+	    #region "Remote button codes"
+
+	    #endregion
 
         public PS3Remote(int vendor, int product, bool hibernation)
         {
@@ -169,27 +171,13 @@ namespace PS3BluMote
                 }
                 else // button pressed
                 {
-                    byte[] bCode = { InData.Data[1], InData.Data[2], InData.Data[3], InData.Data[4] };
-
-                    int i, j;
-
-					for (j = 0; j < buttonCodes.Length; j++)
-                    {
-						for (i = 0; i < buttonCodes[j].Length; i++)
-                        {
-                            if (bCode[i] != buttonCodes[j][i]) break;
-                        }
-
-                        if (i == 4) break;
-                    }
-
-                    if (j != buttonCodes.Length)
-                    {
-                        lastButton = (Button)j;
-                        isButtonDown = true;
-
-                        if (ButtonDown != null) ButtonDown(this, new ButtonData(lastButton));
-                    }                   
+	                var bCode = new ButtonCode(InData.Data, 1);
+	                if (buttonCodes.ContainsKey(bCode))
+	                {
+						lastButton = buttonCodes[bCode];
+						isButtonDown = true;
+						if (ButtonDown != null) ButtonDown(this, new ButtonData(lastButton));
+					}
                 }
 
                 byte batteryReading = (byte)(InData.Data[11] * 20);
@@ -276,75 +264,15 @@ namespace PS3BluMote
 
         public class ButtonData : EventArgs
         {
-            public Button button;
+            public ButtonType button;
 
-            public ButtonData(Button btn)
+            public ButtonData(ButtonType btn)
             {
                 button = btn;
             }
         }
 
-        public enum Button
-        {
-            Eject,
-            Audio,
-            Angle,
-            Subtitle,
-            Clear,
-            Time,
-            NUM_1,
-            NUM_2,
-            NUM_3,
-            NUM_4,
-            NUM_5,
-            NUM_6,
-            NUM_7,
-            NUM_8,
-            NUM_9,
-            NUM_0,
-            Blue,
-            Red,
-            Green,
-            Yellow,
-            Display,
-            Top_Menu,
-            PopUp_Menu,
-            Return,
-            Triangle,
-            Circle,
-            Square,
-            Cross,
-            Arrow_Up,
-            Arrow_Down,
-            Arrow_Left,
-            Arrow_Right,
-            Enter,
-            L1,
-            L2,
-            L3,
-            R1,
-            R2,
-            R3,
-            Playstation,
-            Select,
-            Start,
-            Play,
-            Stop,
-            Pause,
-            Scan_Back,
-            Scan_Forward,
-            Prev,
-            Next,
-            Step_Back,
-            Step_Forward,
-            Instant_Back,
-            Instant_Forward,
-            Channel_Up,
-            Channel_Down,
-            dash_slash_dash_dash
-        }
-
-		private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+	    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
 	}
 }

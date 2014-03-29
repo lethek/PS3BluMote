@@ -76,7 +76,7 @@ namespace WindowsAPI
         static extern IntPtr SetupDiGetClassDevsW(
             [In] ref Guid ClassGuid,
             [MarshalAs(UnmanagedType.LPWStr)]
-string Enumerator,
+			string Enumerator,
             IntPtr parent,
             UInt32 flags);
 

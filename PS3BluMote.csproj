@@ -89,7 +89,9 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <ItemGroup>
-
+    <Reference Include="HidLibrary">
+      <HintPath>packages\hidlibrary.3.2.24.0\lib\HidLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>packages\NLog.2.1.0\lib\net40\NLog.dll</HintPath>
     </Reference>
@@ -101,7 +103,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-
+    <Compile Include="ButtonCode.cs" />
+    <Compile Include="ButtonType.cs" />
+    <Compile Include="ControlThread.cs" />
     <Compile Include="MappingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,16 +120,7 @@
     <Compile Include="OsdWindow.Designer.cs">
       <DependentUpon>OsdWindow.cs</DependentUpon>
     </Compile>
-
     <Compile Include="SendInputAPI.cs" />
-    <Compile Include="HID\HidAsyncState.cs" />
-    <Compile Include="HID\HidDevice.cs" />
-    <Compile Include="HID\HidDeviceAttributes.cs" />
-    <Compile Include="HID\HidDeviceCapabilities.cs" />
-    <Compile Include="HID\HidDeviceData.cs" />
-    <Compile Include="HID\HidDeviceEventMonitor.cs" />
-    <Compile Include="HID\HidDevices.cs" />
-    <Compile Include="HID\HidReport.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -209,7 +204,6 @@
     </PublishFile>
   </ItemGroup>
   <ItemGroup>
-
     <None Include="Resources\icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
