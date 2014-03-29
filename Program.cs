@@ -20,6 +20,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 using System;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace PS3BluMote
@@ -29,13 +30,15 @@ namespace PS3BluMote
         [STAThread]
         static void Main()
         {
-            System.Threading.Mutex mutex = new System.Threading.Mutex(false, "PS3BluMote");
-            if (mutex.WaitOne(0, false) == false) return;
+            var mutex = new Mutex(false, "PS3BluMote");
+	        if (!mutex.WaitOne(0, false)) {
+		        return;
+	        }
             
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            SettingsForm frmSettings = new SettingsForm();
+            var frmSettings = new SettingsForm();
 
             Application.Run();
 

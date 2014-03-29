@@ -162,7 +162,6 @@ namespace PS3BluMote
             if ((InData.Status == HidDeviceData.ReadStatus.Success) && (InData.Data[0] == 1))
             {
                 Log.Debug("Read button data: " + String.Join(",", InData.Data));
-                //Debug.Print("Read button data: " + String.Join(",", InData.Data));
 
                 if ((InData.Data[10] == 0) || (InData.Data[4] == 255)) // button released
                 {
@@ -174,9 +173,9 @@ namespace PS3BluMote
 
                     int i, j;
 
-                    for (j = 0; j < 56; j++)
+					for (j = 0; j < buttonCodes.Length; j++)
                     {
-                        for (i = 0; i < 4; i++)
+						for (i = 0; i < buttonCodes[j].Length; i++)
                         {
                             if (bCode[i] != buttonCodes[j][i]) break;
                         }
@@ -184,7 +183,7 @@ namespace PS3BluMote
                         if (i == 4) break;
                     }
 
-                    if (j != 56)
+                    if (j != buttonCodes.Length)
                     {
                         lastButton = (Button)j;
                         isButtonDown = true;
