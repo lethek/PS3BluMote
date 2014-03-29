@@ -445,7 +445,7 @@ namespace PS3BluMote
 			// lblCopyright
 			// 
 			this.lblCopyright.AutoSize = true;
-			this.lblCopyright.Location = new System.Drawing.Point(-1, 397);
+			this.lblCopyright.Location = new System.Drawing.Point(3, 383);
 			this.lblCopyright.Name = "lblCopyright";
 			this.lblCopyright.Size = new System.Drawing.Size(160, 52);
 			this.lblCopyright.TabIndex = 18;
