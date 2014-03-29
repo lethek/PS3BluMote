@@ -506,9 +506,9 @@ namespace PS3BluMote
 			this.cbOsdRemoteButtonPress.AutoSize = true;
 			this.cbOsdRemoteButtonPress.Location = new System.Drawing.Point(6, 159);
 			this.cbOsdRemoteButtonPress.Name = "cbOsdRemoteButtonPress";
-			this.cbOsdRemoteButtonPress.Size = new System.Drawing.Size(159, 17);
+			this.cbOsdRemoteButtonPress.Size = new System.Drawing.Size(163, 17);
 			this.cbOsdRemoteButtonPress.TabIndex = 12;
-			this.cbOsdRemoteButtonPress.Text = "the remote button is pressed";
+			this.cbOsdRemoteButtonPress.Text = "The remote button is pressed";
 			this.cbOsdRemoteButtonPress.UseVisualStyleBackColor = true;
 			this.cbOsdRemoteButtonPress.CheckedChanged += new System.EventHandler(this.cbOsdRemoteButtonPress_CheckedChanged);
 			// 
@@ -526,17 +526,16 @@ namespace PS3BluMote
 			this.groupBox6.Size = new System.Drawing.Size(210, 186);
 			this.groupBox6.TabIndex = 11;
 			this.groupBox6.TabStop = false;
-			this.groupBox6.Text = "the remote button is pressed";
 			// 
 			// rbOsdRemoteButtonPressMatched
 			// 
 			this.rbOsdRemoteButtonPressMatched.AutoSize = true;
 			this.rbOsdRemoteButtonPressMatched.Location = new System.Drawing.Point(6, 43);
 			this.rbOsdRemoteButtonPressMatched.Name = "rbOsdRemoteButtonPressMatched";
-			this.rbOsdRemoteButtonPressMatched.Size = new System.Drawing.Size(119, 17);
+			this.rbOsdRemoteButtonPressMatched.Size = new System.Drawing.Size(120, 17);
 			this.rbOsdRemoteButtonPressMatched.TabIndex = 12;
 			this.rbOsdRemoteButtonPressMatched.TabStop = true;
-			this.rbOsdRemoteButtonPressMatched.Text = "mapping is matched";
+			this.rbOsdRemoteButtonPressMatched.Text = "Mapping is matched";
 			this.rbOsdRemoteButtonPressMatched.UseVisualStyleBackColor = true;
 			// 
 			// rbOsdRemoteButtonPressAssigned
@@ -544,10 +543,10 @@ namespace PS3BluMote
 			this.rbOsdRemoteButtonPressAssigned.AutoSize = true;
 			this.rbOsdRemoteButtonPressAssigned.Location = new System.Drawing.Point(6, 67);
 			this.rbOsdRemoteButtonPressAssigned.Name = "rbOsdRemoteButtonPressAssigned";
-			this.rbOsdRemoteButtonPressAssigned.Size = new System.Drawing.Size(97, 17);
+			this.rbOsdRemoteButtonPressAssigned.Size = new System.Drawing.Size(98, 17);
 			this.rbOsdRemoteButtonPressAssigned.TabIndex = 11;
 			this.rbOsdRemoteButtonPressAssigned.TabStop = true;
-			this.rbOsdRemoteButtonPressAssigned.Text = "key is assigned";
+			this.rbOsdRemoteButtonPressAssigned.Text = "Key is assigned";
 			this.rbOsdRemoteButtonPressAssigned.UseVisualStyleBackColor = true;
 			// 
 			// rbOsdRemoteButtonPressAlways
@@ -555,10 +554,10 @@ namespace PS3BluMote
 			this.rbOsdRemoteButtonPressAlways.AutoSize = true;
 			this.rbOsdRemoteButtonPressAlways.Location = new System.Drawing.Point(6, 20);
 			this.rbOsdRemoteButtonPressAlways.Name = "rbOsdRemoteButtonPressAlways";
-			this.rbOsdRemoteButtonPressAlways.Size = new System.Drawing.Size(57, 17);
+			this.rbOsdRemoteButtonPressAlways.Size = new System.Drawing.Size(58, 17);
 			this.rbOsdRemoteButtonPressAlways.TabIndex = 10;
 			this.rbOsdRemoteButtonPressAlways.TabStop = true;
-			this.rbOsdRemoteButtonPressAlways.Text = "always";
+			this.rbOsdRemoteButtonPressAlways.Text = "Always";
 			this.rbOsdRemoteButtonPressAlways.UseVisualStyleBackColor = true;
 			// 
 			// cbOsdAssignedKey
@@ -566,9 +565,9 @@ namespace PS3BluMote
 			this.cbOsdAssignedKey.AutoSize = true;
 			this.cbOsdAssignedKey.Location = new System.Drawing.Point(22, 163);
 			this.cbOsdAssignedKey.Name = "cbOsdAssignedKey";
-			this.cbOsdAssignedKey.Size = new System.Drawing.Size(116, 17);
+			this.cbOsdAssignedKey.Size = new System.Drawing.Size(118, 17);
 			this.cbOsdAssignedKey.TabIndex = 9;
-			this.cbOsdAssignedKey.Text = "show assigned key";
+			this.cbOsdAssignedKey.Text = "Show assigned key";
 			this.cbOsdAssignedKey.UseVisualStyleBackColor = true;
 			// 
 			// cbOsdActiveWindowTitle
@@ -576,9 +575,9 @@ namespace PS3BluMote
 			this.cbOsdActiveWindowTitle.AutoSize = true;
 			this.cbOsdActiveWindowTitle.Location = new System.Drawing.Point(22, 91);
 			this.cbOsdActiveWindowTitle.Name = "cbOsdActiveWindowTitle";
-			this.cbOsdActiveWindowTitle.Size = new System.Drawing.Size(141, 17);
+			this.cbOsdActiveWindowTitle.Size = new System.Drawing.Size(143, 17);
 			this.cbOsdActiveWindowTitle.TabIndex = 6;
-			this.cbOsdActiveWindowTitle.Text = "show active window title";
+			this.cbOsdActiveWindowTitle.Text = "Show active window title";
 			this.cbOsdActiveWindowTitle.UseVisualStyleBackColor = true;
 			// 
 			// cbOsdPressedRemoteButton
@@ -586,9 +585,9 @@ namespace PS3BluMote
 			this.cbOsdPressedRemoteButton.AutoSize = true;
 			this.cbOsdPressedRemoteButton.Location = new System.Drawing.Point(22, 139);
 			this.cbOsdPressedRemoteButton.Name = "cbOsdPressedRemoteButton";
-			this.cbOsdPressedRemoteButton.Size = new System.Drawing.Size(159, 17);
+			this.cbOsdPressedRemoteButton.Size = new System.Drawing.Size(161, 17);
 			this.cbOsdPressedRemoteButton.TabIndex = 8;
-			this.cbOsdPressedRemoteButton.Text = "show pressed remote button";
+			this.cbOsdPressedRemoteButton.Text = "Show pressed remote button";
 			this.cbOsdPressedRemoteButton.UseVisualStyleBackColor = true;
 			// 
 			// cbOsdMappingName
@@ -596,9 +595,9 @@ namespace PS3BluMote
 			this.cbOsdMappingName.AutoSize = true;
 			this.cbOsdMappingName.Location = new System.Drawing.Point(22, 115);
 			this.cbOsdMappingName.Name = "cbOsdMappingName";
-			this.cbOsdMappingName.Size = new System.Drawing.Size(123, 17);
+			this.cbOsdMappingName.Size = new System.Drawing.Size(125, 17);
 			this.cbOsdMappingName.TabIndex = 7;
-			this.cbOsdMappingName.Text = "show mapping name";
+			this.cbOsdMappingName.Text = "Show mapping name";
 			this.cbOsdMappingName.UseVisualStyleBackColor = true;
 			// 
 			// cbOsdRemoteBatteryChange
@@ -606,9 +605,9 @@ namespace PS3BluMote
 			this.cbOsdRemoteBatteryChange.AutoSize = true;
 			this.cbOsdRemoteBatteryChange.Location = new System.Drawing.Point(6, 125);
 			this.cbOsdRemoteBatteryChange.Name = "cbOsdRemoteBatteryChange";
-			this.cbOsdRemoteBatteryChange.Size = new System.Drawing.Size(188, 17);
+			this.cbOsdRemoteBatteryChange.Size = new System.Drawing.Size(186, 17);
 			this.cbOsdRemoteBatteryChange.TabIndex = 10;
-			this.cbOsdRemoteBatteryChange.Text = "the remote battery life is changeed";
+			this.cbOsdRemoteBatteryChange.Text = "The remote battery life is changed";
 			this.cbOsdRemoteBatteryChange.UseVisualStyleBackColor = true;
 			// 
 			// cbOsdRemoteHibernate
@@ -616,9 +615,9 @@ namespace PS3BluMote
 			this.cbOsdRemoteHibernate.AutoSize = true;
 			this.cbOsdRemoteHibernate.Location = new System.Drawing.Point(6, 101);
 			this.cbOsdRemoteHibernate.Name = "cbOsdRemoteHibernate";
-			this.cbOsdRemoteHibernate.Size = new System.Drawing.Size(139, 17);
+			this.cbOsdRemoteHibernate.Size = new System.Drawing.Size(143, 17);
 			this.cbOsdRemoteHibernate.TabIndex = 3;
-			this.cbOsdRemoteHibernate.Text = "the remote is hibernated";
+			this.cbOsdRemoteHibernate.Text = "The remote is hibernated";
 			this.cbOsdRemoteHibernate.UseVisualStyleBackColor = true;
 			// 
 			// cbOsdRemoteDisconnect
@@ -626,9 +625,9 @@ namespace PS3BluMote
 			this.cbOsdRemoteDisconnect.AutoSize = true;
 			this.cbOsdRemoteDisconnect.Location = new System.Drawing.Point(6, 77);
 			this.cbOsdRemoteDisconnect.Name = "cbOsdRemoteDisconnect";
-			this.cbOsdRemoteDisconnect.Size = new System.Drawing.Size(153, 17);
+			this.cbOsdRemoteDisconnect.Size = new System.Drawing.Size(157, 17);
 			this.cbOsdRemoteDisconnect.TabIndex = 2;
-			this.cbOsdRemoteDisconnect.Text = "the remote is disconnected";
+			this.cbOsdRemoteDisconnect.Text = "The remote is disconnected";
 			this.cbOsdRemoteDisconnect.UseVisualStyleBackColor = true;
 			// 
 			// cbOsdRemoteConnect
@@ -636,9 +635,9 @@ namespace PS3BluMote
 			this.cbOsdRemoteConnect.AutoSize = true;
 			this.cbOsdRemoteConnect.Location = new System.Drawing.Point(6, 53);
 			this.cbOsdRemoteConnect.Name = "cbOsdRemoteConnect";
-			this.cbOsdRemoteConnect.Size = new System.Drawing.Size(140, 17);
+			this.cbOsdRemoteConnect.Size = new System.Drawing.Size(144, 17);
 			this.cbOsdRemoteConnect.TabIndex = 1;
-			this.cbOsdRemoteConnect.Text = "the remote is connected";
+			this.cbOsdRemoteConnect.Text = "The remote is connected";
 			this.cbOsdRemoteConnect.UseVisualStyleBackColor = true;
 			// 
 			// cbOsdAppStart
@@ -646,9 +645,9 @@ namespace PS3BluMote
 			this.cbOsdAppStart.AutoSize = true;
 			this.cbOsdAppStart.Location = new System.Drawing.Point(6, 20);
 			this.cbOsdAppStart.Name = "cbOsdAppStart";
-			this.cbOsdAppStart.Size = new System.Drawing.Size(141, 17);
+			this.cbOsdAppStart.Size = new System.Drawing.Size(145, 17);
 			this.cbOsdAppStart.TabIndex = 0;
-			this.cbOsdAppStart.Text = "this application is started";
+			this.cbOsdAppStart.Text = "This application is started";
 			this.cbOsdAppStart.UseVisualStyleBackColor = true;
 			// 
 			// buttonTestOsd

@@ -35,6 +35,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 
 using System.Text.RegularExpressions;
+using NLog;
 
 namespace PS3BluMote
 {
@@ -458,11 +459,6 @@ namespace PS3BluMote
             if (keyboard != null) keyboard.isSmsEnabled = cbSms.Checked;
         }
 
-        private void buttonDump_Click(object sender, EventArgs e)
-        {
-            DebugLog.outputToFile(SETTINGS_DIRECTORY + "log.txt");
-        }
-
         private void llblOpenFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process prc = new System.Diagnostics.Process();
@@ -649,7 +645,6 @@ namespace PS3BluMote
             }
             else if (sender.Equals(mitemExit))
             {
-                DebugLog.outputToFile(SETTINGS_DIRECTORY + "log.txt");
                 Application.Exit();
             }
         }
@@ -675,7 +670,7 @@ namespace PS3BluMote
         # region ### remote ###
         private void remote_ButtonDown(object sender, PS3Remote.ButtonData e)
         {
-            DebugLog.write("Button down: " + e.button.ToString());
+            Log.Debug("Button down: " + e.button.ToString());
 
             ButtonMapping mapping = null;
 
@@ -690,7 +685,7 @@ namespace PS3BluMote
                 if (Regex.IsMatch(activeWindowTitle, app.condition, (RegexOptions)(ignoreCase ? 1 : 0)))
                 {
                     mapping = app.buttonMappings[(int)e.button];
-                    DebugLog.write("Matched: {" + activeWindowTitle + "} {" + app.name + "}");
+                    Log.Debug("Matched: {" + activeWindowTitle + "} {" + app.name + "}");
                     if (cbOsdMappingName.Checked && app.name != "")
                         if (activeWindowTitle != "")
                             showString.Append(": " + app.name);
@@ -704,8 +699,8 @@ namespace PS3BluMote
 
             if (mapping == null)
             {
-                DebugLog.write("Keys down: { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
-                DebugLog.write("Keys unmatch: Active App Window Title {" + activeWindowTitle + "}");
+                Log.Debug("Keys down: { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
+                Log.Debug("Keys unmatch: Active App Window Title {" + activeWindowTitle + "}");
             }
             else
             {
@@ -724,14 +719,14 @@ namespace PS3BluMote
                 {
                     keyboard.sendKeysDown(mapping.keysMapped);
                     keyboard.releaseLastKeys();
-                    DebugLog.write("Keys repeat send on : { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
+                    Log.Debug("Keys repeat send on : { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
 
                     timerRepeat.Enabled = true;
                 }
                 else
                 {
                     keyboard.sendKeysDown(mapping.keysMapped);
-                    DebugLog.write("Keys down: { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
+                    Log.Debug("Keys down: { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
                 }
             }
 
@@ -741,24 +736,24 @@ namespace PS3BluMote
 
         private void remote_ButtonReleased(object sender, PS3Remote.ButtonData e)
         {
-            DebugLog.write("Button released: " + e.button.ToString());
+            Log.Debug("Button released: " + e.button.ToString());
 
             if (timerRepeat.Enabled)
             {
-                DebugLog.write("Keys repeat send off: { " + String.Join(",", keyboard.lastKeysDown.ToArray()) + " }");
+                Log.Debug("Keys repeat send off: { " + String.Join(",", keyboard.lastKeysDown.ToArray()) + " }");
 
                 timerRepeat.Enabled = false;
                 return;
             }
 
-            if (keyboard.lastKeysDown != null) DebugLog.write("Keys up: { " + String.Join(",", keyboard.lastKeysDown.ToArray()) + " }");
+            if (keyboard.lastKeysDown != null) Log.Debug("Keys up: { " + String.Join(",", keyboard.lastKeysDown.ToArray()) + " }");
 
             keyboard.releaseLastKeys();
         }
 
         private void remote_Connected(object sender, EventArgs e)
         {
-            DebugLog.write("Remote connected");
+            Log.Debug("Remote connected");
             if (cbOsdRemoteConnect.Checked) ShowOsd("Remote connected");
 
             notifyIcon.Text = "PS3BluMote: Connected (Battery: " + remote.getBatteryLifeString() + ").";
@@ -767,7 +762,7 @@ namespace PS3BluMote
 
         private void remote_Disconnected(object sender, EventArgs e)
         {
-            DebugLog.write("Remote disconnected");
+            Log.Debug("Remote disconnected");
             if (cbOsdRemoteDisconnect.Checked) ShowOsd("Remote disconnected");
 
             notifyIcon.Text = "PS3BluMote: Disconnected.";
@@ -778,7 +773,7 @@ namespace PS3BluMote
         {
             notifyIcon.Text = "PS3BluMote: Connected + (Battery: " + remote.getBatteryLife.ToString() + "%).";
 
-            DebugLog.write("Battery life: " + remote.getBatteryLife.ToString() + "%");
+            Log.Debug("Battery life: " + remote.getBatteryLife.ToString() + "%");
             if (cbOsdRemoteBatteryChange.Checked) ShowOsd("Battery life: " + remote.getBatteryLife.ToString() + "%");
         }
         # endregion
@@ -839,6 +834,8 @@ namespace PS3BluMote
             return null;
         }
         # endregion
+
+	    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
     }
 }
 

@@ -26,6 +26,7 @@ using System.Timers;
 
 using HidLibrary;
 using WindowsAPI;
+using NLog;
 
 namespace PS3BluMote
 {
@@ -160,7 +161,7 @@ namespace PS3BluMote
 
             if ((InData.Status == HidDeviceData.ReadStatus.Success) && (InData.Data[0] == 1))
             {
-                if (DebugLog.isLogging) DebugLog.write("Read button data: " + String.Join(",", InData.Data));
+                Log.Debug("Read button data: " + String.Join(",", InData.Data));
                 //Debug.Print("Read button data: " + String.Join(",", InData.Data));
 
                 if ((InData.Data[10] == 0) || (InData.Data[4] == 255)) // button released
@@ -208,7 +209,7 @@ namespace PS3BluMote
                 return;
             }
 
-            if (DebugLog.isLogging) DebugLog.write("Read remote data: " + String.Join(",", InData.Data));
+            Log.Debug("Read remote data: " + String.Join(",", InData.Data));
 
             if (Disconnected != null) Disconnected(this, new EventArgs());
 
@@ -223,7 +224,7 @@ namespace PS3BluMote
         {
             if (hidRemote == null)
             {
-                if (DebugLog.isLogging) DebugLog.write("Searching for remote");
+                Log.Debug("Searching for remote");
 
                 IEnumerator<HidDevice> devices = HidDevices.Enumerate(vendorId, productId).GetEnumerator();
                 
@@ -231,7 +232,7 @@ namespace PS3BluMote
 
                 if (hidRemote != null)
                 {
-                    if (DebugLog.isLogging) DebugLog.write("Remote found");
+                    Log.Debug("Remote found");
 
                     hidRemote.OpenDevice();
 
@@ -253,7 +254,7 @@ namespace PS3BluMote
 
         private void timerHibernation_Elapsed(object sender, ElapsedEventArgs e)
         {
-            /*if (DebugLog.isLogging) DebugLog.write("Attempting to hibernate remote");
+            /*if (Log.isLogging) Log.Debug("Attempting to hibernate remote");
 
             try
             {
@@ -267,7 +268,7 @@ namespace PS3BluMote
             }
             catch (Exception ex)
             {
-                if (DebugLog.isLogging) DebugLog.write("Unable to hibernate remote:" + ex.Message);
+                if (Log.isLogging) Log.Debug("Unable to hibernate remote:" + ex.Message);
             }
 
             timerFindRemote.Enabled = true;*/
@@ -343,5 +344,8 @@ namespace PS3BluMote
             Channel_Down,
             dash_slash_dash_dash
         }
-    }
+
+		private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+	}
 }
