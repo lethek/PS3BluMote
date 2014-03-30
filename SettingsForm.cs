@@ -69,9 +69,8 @@ namespace PS3BluMote
             SetForms();
             keyboard = new SendInputAPI.Keyboard(cbSms.Checked);
 
-            timerRepeat = new System.Timers.Timer();
-            timerRepeat.Interval = model.Settings.repeatinterval;
-            timerRepeat.Elapsed += new System.Timers.ElapsedEventHandler(timerRepeat_Elapsed);
+            timerRepeat = new System.Timers.Timer { Interval = model.Settings.repeatinterval };
+	        timerRepeat.Elapsed += timerRepeat_Elapsed;
 
             SetRemote();
 
@@ -234,15 +233,17 @@ namespace PS3BluMote
         {
             try
             {
-                remote = new PS3Remote(int.Parse(txtVendorId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber), int.Parse(txtProductId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber), false);
+	            var vendorId = int.Parse(txtVendorId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
+	            var productId = int.Parse(txtProductId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
+                remote = new PS3Remote(vendorId, productId);
 
-                remote.BatteryLifeChanged += new EventHandler<EventArgs>(remote_BatteryLifeChanged);
-                remote.ButtonDown += new EventHandler<PS3Remote.ButtonData>(remote_ButtonDown);
-                remote.ButtonReleased += new EventHandler<PS3Remote.ButtonData>(remote_ButtonReleased);
-                remote.Connected += new EventHandler<EventArgs>(remote_Connected);
-                remote.Disconnected += new EventHandler<EventArgs>(remote_Disconnected);
+                remote.BatteryLifeChanged += remote_BatteryLifeChanged;
+                remote.ButtonDown += remote_ButtonDown;
+                remote.ButtonReleased += remote_ButtonReleased;
+                remote.Connected += remote_Connected;
+                remote.Disconnected += remote_Disconnected;
 
-                remote.connect();
+                remote.Connect();
             }
             catch
             {
@@ -689,7 +690,7 @@ namespace PS3BluMote
         # region ### remote ###
         private void remote_ButtonDown(object sender, PS3Remote.ButtonData e)
         {
-            Log.Debug("Button down: " + e.button.ToString());
+            Log.Debug("Button down: " + e.Button.ToString());
 
             ButtonMapping mapping = null;
 
@@ -703,7 +704,7 @@ namespace PS3BluMote
                 bool ignoreCase = !app.caseSensitive;
                 if (Regex.IsMatch(activeWindowTitle, app.condition, (RegexOptions)(ignoreCase ? 1 : 0)))
                 {
-                    mapping = app.buttonMappings[(int)e.button];
+                    mapping = app.buttonMappings[(int)e.Button];
                     Log.Debug("Matched: {" + activeWindowTitle + "} {" + app.name + "}");
                     if (cbOsdMappingName.Checked && app.name != "")
                         if (activeWindowTitle != "")
@@ -714,7 +715,7 @@ namespace PS3BluMote
                 }
             }
             if (cbOsdPressedRemoteButton.Checked)
-                showString.Append("\n" + e.button.ToString());
+                showString.Append("\n" + e.Button.ToString());
 
             if (mapping == null)
             {
@@ -724,7 +725,7 @@ namespace PS3BluMote
             else
             {
                 if (cbOsdAssignedKey.Checked)
-                    if (e.button.ToString() != "")
+                    if (e.Button.ToString() != "")
                         showString.Append(": " + mapping.joinedKeyMapped.Replace(",", " + "));
                     else
                         showString.Append("\n" + mapping.joinedKeyMapped.Replace(",", " + "));
@@ -753,9 +754,9 @@ namespace PS3BluMote
                 ShowOsd(showString.ToString());
         }
 
-        private void remote_ButtonReleased(object sender, PS3Remote.ButtonData e)
+        private void remote_ButtonReleased(object sender, EventArgs e)
         {
-            Log.Debug("Button released: " + e.button.ToString());
+            Log.Debug("Button released");
 
             if (timerRepeat.Enabled)
             {
@@ -775,7 +776,7 @@ namespace PS3BluMote
             Log.Debug("Remote connected");
             if (cbOsdRemoteConnect.Checked) ShowOsd("Remote connected");
 
-            notifyIcon.Text = "PS3BluMote: Connected (Battery: " + remote.getBatteryLifeString() + ").";
+            notifyIcon.Text = "PS3BluMote: Connected (Battery: " + remote.BatteryLifeString + ").";
             notifyIcon.Icon = Properties.Resources.Icon_Connected;
         }
 
@@ -790,10 +791,10 @@ namespace PS3BluMote
 
         private void remote_BatteryLifeChanged(object sender, EventArgs e)
         {
-            notifyIcon.Text = "PS3BluMote: Connected + (Battery: " + remote.getBatteryLife.ToString() + "%).";
+			notifyIcon.Text = "PS3BluMote: Connected + (Battery: " + remote.BatteryLifeString + ").";
 
-            Log.Debug("Battery life: " + remote.getBatteryLife.ToString() + "%");
-            if (cbOsdRemoteBatteryChange.Checked) ShowOsd("Battery life: " + remote.getBatteryLife.ToString() + "%");
+			Log.Debug("Battery life: " + remote.BatteryLifeString);
+			if (cbOsdRemoteBatteryChange.Checked) ShowOsd("Battery life: " + remote.BatteryLifeString);
         }
         # endregion
 

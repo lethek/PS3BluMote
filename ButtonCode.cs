@@ -23,7 +23,7 @@ namespace PS3BluMote
 
 		public override string ToString()
 		{
-			return String.Join(",", _value);
+			return String.Join(",", _bytes);
 		}
 
 		public override int GetHashCode()
