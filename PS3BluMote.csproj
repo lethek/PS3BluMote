@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ButtonCode.cs" />
+    <Compile Include="ButtonData.cs" />
     <Compile Include="ButtonType.cs" />
     <Compile Include="ControlThread.cs" />
     <Compile Include="MappingsForm.cs">
@@ -123,6 +124,8 @@
     <Compile Include="OsdWindow.Designer.cs">
       <DependentUpon>OsdWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="PS3RemoteService.cs" />
+    <Compile Include="RemoteStateData.cs" />
     <Compile Include="SendInputAPI.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Program.cs" />

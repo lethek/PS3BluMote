@@ -1,5 +1,6 @@
 namespace PS3BluMote
 {
+
 	public enum ButtonType
 	{
 		Eject,
@@ -59,4 +60,5 @@ namespace PS3BluMote
 		Channel_Down,
 		dash_slash_dash_dash
 	}
+
 }

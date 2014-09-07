@@ -38,11 +38,17 @@ namespace PS3BluMote
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var frmSettings = new SettingsForm();
+	        var model = new ModelXml(SETTINGS_FILE);
+	        var remoteService = new PS3RemoteService(model);
+            var frmSettings = new SettingsForm(model, remoteService);
 
             Application.Run();
 
             frmSettings.Dispose();
         }
-    }
+
+		private static readonly String SETTINGS_FILE = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\PS3BluMote\\settings.ini";
+
+	}
+
 }

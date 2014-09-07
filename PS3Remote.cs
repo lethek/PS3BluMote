@@ -36,11 +36,11 @@ namespace PS3BluMote
 	public class PS3Remote
 	{
 
-		public event EventHandler<EventArgs> BatteryLifeChanged;
 		public event EventHandler<ButtonData> ButtonDown;
 		public event EventHandler<EventArgs> ButtonReleased;
-		public event EventHandler<EventArgs> Connected;
-		public event EventHandler<EventArgs> Disconnected;
+		public event EventHandler<RemoteStateData> Connected;
+		public event EventHandler<RemoteStateData> Disconnected;
+		public event EventHandler<RemoteStateData> BatteryLifeChanged;
 
 		public byte? BatteryLife { get; private set; }
 		public string BatteryLifeString { get { return BatteryLife.HasValue ? BatteryLife + "%" : "Unknown"; } }
@@ -72,7 +72,6 @@ namespace PS3BluMote
 				.Ignore(RemoteTrigger.ButtonUp)
 				.Ignore(RemoteTrigger.Exit);
 
-
 			_timerFindRemote = new Timer { Interval = 1500 };
 			_timerFindRemote.Elapsed += timerFindRemote_Elapsed;
 		}
@@ -84,8 +83,6 @@ namespace PS3BluMote
 		}
 
 
-
-
 		private void OnRead(HidDeviceData deviceOutput)
 		{
 			//Check whether the read was successful or not
@@ -95,7 +92,7 @@ namespace PS3BluMote
 
 				var disconnectedEvent = Disconnected;
 				if (disconnectedEvent != null) {
-					disconnectedEvent(this, new EventArgs());
+					disconnectedEvent(this, new RemoteStateData(BatteryLife, false));
 				}
 				_hidRemote.Dispose();
 				_hidRemote = null;
@@ -123,7 +120,7 @@ namespace PS3BluMote
 				BatteryLife = batteryReading;
 				var batteryLifeChangedEvent = BatteryLifeChanged;
 				if (batteryLifeChangedEvent != null) {
-					batteryLifeChangedEvent(this, new EventArgs());
+					batteryLifeChangedEvent(this, new RemoteStateData(BatteryLife, true));
 				}
 			}
 
@@ -167,7 +164,7 @@ namespace PS3BluMote
 					_hidRemote.OpenDevice();
 					var connectedEvent = Connected;
 					if (connectedEvent != null) {
-						connectedEvent(this, new EventArgs());
+						connectedEvent(this, new RemoteStateData(BatteryLife, true));
 					}
 					_timerFindRemote.Enabled = false;
 					_hidRemote.Read(OnRead);
@@ -175,19 +172,6 @@ namespace PS3BluMote
 
 			} else {
 				_timerFindRemote.Enabled = false;
-			}
-		}
-
-
-		public class ButtonData : EventArgs
-		{
-			public readonly ButtonType Button;
-			public readonly DateTime Time;
-
-			public ButtonData(ButtonType btn)
-			{
-				Button = btn;
-				Time = DateTime.Now;
 			}
 		}
 
@@ -278,5 +262,4 @@ namespace PS3BluMote
 		private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
 	}
-
 }

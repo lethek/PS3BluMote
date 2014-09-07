@@ -42,10 +42,9 @@ namespace PS3BluMote
     public partial class SettingsForm : Form
     {
         # region ### fields ###
-        private readonly String SETTINGS_DIRECTORY = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData) + "\\PS3BluMote\\";
-        private readonly String SETTINGS_FILE = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData) + "\\PS3BluMote\\settings.ini";
+        private readonly String SETTINGS_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\PS3BluMote\\";
 
-        private PS3Remote remote;
+	    private PS3RemoteService remoteService;
         private SendInputAPI.Keyboard keyboard;
         private System.Timers.Timer timerRepeat;
 
@@ -61,18 +60,25 @@ namespace PS3BluMote
         private Rectangle rScreen = Screen.PrimaryScreen.Bounds;
         # endregion 
 
-        public SettingsForm()
+        public SettingsForm(ModelXml model, PS3RemoteService remoteService)
         {
             InitializeComponent();
 
-            model = new ModelXml(SETTINGS_FILE);
-            SetForms();
+			this.model = model;
+			this.remoteService = remoteService;
+			remoteService.OnBatteryLifeChanged += remoteService_OnBatteryLifeChanged;
+			remoteService.OnConnected += remoteService_OnConnected;
+			remoteService.OnDisconnected += remoteService_OnDisconnected;
+
+			SetForms();
             keyboard = new SendInputAPI.Keyboard(cbSms.Checked);
 
             timerRepeat = new System.Timers.Timer { Interval = model.Settings.repeatinterval };
 	        timerRepeat.Elapsed += timerRepeat_Elapsed;
 
-            SetRemote();
+			var vendorId = int.Parse(txtVendorId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
+			var productId = int.Parse(txtProductId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
+			remoteService.SetRemote(vendorId, productId);
 
             if (cbOsdAppStart.Checked) ShowOsd("PS3BluMote is started");
         }
@@ -227,33 +233,6 @@ namespace PS3BluMote
         {
             keyboard.sendKeysDown(keyboard.lastKeysDown);
             keyboard.releaseLastKeys();
-        }
-
-        private void SetRemote()
-        {
-            try
-            {
-	            var vendorId = int.Parse(txtVendorId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
-	            var productId = int.Parse(txtProductId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
-                remote = new PS3Remote(vendorId, productId);
-
-                remote.BatteryLifeChanged += remote_BatteryLifeChanged;
-                remote.ButtonDown += remote_ButtonDown;
-                remote.ButtonReleased += remote_ButtonReleased;
-                remote.Connected += remote_Connected;
-                remote.Disconnected += remote_Disconnected;
-
-                remote.Connect();
-            }
-            catch
-            {
-                MessageBox.Show(
-                    "An error occured whilst attempting to load the remote.",
-                    "PS3BluMote: Remote error!",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
         }
 
         private void saveSettings()
@@ -688,7 +667,7 @@ namespace PS3BluMote
         # endregion
 
         # region ### remote ###
-        private void remote_ButtonDown(object sender, PS3Remote.ButtonData e)
+        private void remote_ButtonDown(object sender, ButtonData e)
         {
             Log.Debug("Button down: " + e.Button.ToString());
 
@@ -771,31 +750,33 @@ namespace PS3BluMote
             keyboard.releaseLastKeys();
         }
 
-        private void remote_Connected(object sender, EventArgs e)
-        {
-            Log.Debug("Remote connected");
-            if (cbOsdRemoteConnect.Checked) ShowOsd("Remote connected");
+		private void remoteService_OnDisconnected(object sender, RemoteStateData e)
+		{
+			Log.Debug("Remote disconnected");
+			if (cbOsdRemoteDisconnect.Checked) ShowOsd("Remote disconnected");
 
-            notifyIcon.Text = "PS3BluMote: Connected (Battery: " + remote.BatteryLifeString + ").";
-            notifyIcon.Icon = Properties.Resources.Icon_Connected;
-        }
+			notifyIcon.Text = "PS3BluMote: Disconnected.";
+			notifyIcon.Icon = Properties.Resources.Icon_Disconnected;
+		}
 
-        private void remote_Disconnected(object sender, EventArgs e)
-        {
-            Log.Debug("Remote disconnected");
-            if (cbOsdRemoteDisconnect.Checked) ShowOsd("Remote disconnected");
+		private void remoteService_OnConnected(object sender, RemoteStateData e)
+		{
+			Log.Debug("Remote connected");
+			if (cbOsdRemoteConnect.Checked) {
+				ShowOsd("Remote connected");
+			}
 
-            notifyIcon.Text = "PS3BluMote: Disconnected.";
-            notifyIcon.Icon = Properties.Resources.Icon_Disconnected;
-        }
+			notifyIcon.Text = "PS3BluMote: Connected (Battery: " + e.BatteryLife + ").";
+			notifyIcon.Icon = Properties.Resources.Icon_Connected;
+		}
 
-        private void remote_BatteryLifeChanged(object sender, EventArgs e)
-        {
-			notifyIcon.Text = "PS3BluMote: Connected + (Battery: " + remote.BatteryLifeString + ").";
+		private void remoteService_OnBatteryLifeChanged(object sender, RemoteStateData e)
+		{
+			notifyIcon.Text = "PS3BluMote: Connected + (Battery: " + e.BatteryLife + ").";
 
-			Log.Debug("Battery life: " + remote.BatteryLifeString);
-			if (cbOsdRemoteBatteryChange.Checked) ShowOsd("Battery life: " + remote.BatteryLifeString);
-        }
+			Log.Debug("Battery life: " + e.BatteryLife);
+			if (cbOsdRemoteBatteryChange.Checked) ShowOsd("Battery life: " + e.BatteryLife);
+		}
         # endregion
 
         # region ### OSD ###
