@@ -22,6 +22,7 @@ Hibernation Code provided and integrated by Miljbee (miljbee@gmail.com)
 */
 
 using System;
+using System.Threading;
 using System.Windows.Forms;
 
 using WindowsAPI;
@@ -37,6 +38,8 @@ using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using NLog;
 
+using Timer = System.Threading.Timer;
+
 namespace PS3BluMote
 {
     public partial class SettingsForm : Form
@@ -46,7 +49,8 @@ namespace PS3BluMote
 
 	    private PS3RemoteService remoteService;
         private SendInputAPI.Keyboard keyboard;
-        private System.Timers.Timer timerRepeat;
+        private Timer timerRepeat;
+		private bool repeating;
 
         public ModelXml model;
 
@@ -58,9 +62,17 @@ namespace PS3BluMote
         private Color osdPathColor;
         private Single osdPathWidth;
         private Rectangle rScreen = Screen.PrimaryScreen.Bounds;
-        # endregion 
 
-        public SettingsForm(ModelXml model, PS3RemoteService remoteService)
+		//Calculate approximately (because apparently it varies a little from hardware to hardware) the system's current keyboard delay and repeat rates
+		private const double KeyboardDelayX = 3d;
+		private const double KeyboardDelayC = 250d;
+		private const double KeyboardRepeatX = (100 / 93d - 400 / 31d);
+		private const double KeyboardRepeatC = 400d;
+		private static readonly int KeyboardDelay = (int)(SystemInformation.KeyboardDelay * KeyboardDelayX + KeyboardDelayC);
+		private static readonly int KeyboardRepeat = (int)(SystemInformation.KeyboardSpeed * KeyboardRepeatX + KeyboardRepeatC);
+		# endregion
+
+		public SettingsForm(ModelXml model, PS3RemoteService remoteService)
         {
             InitializeComponent();
 
@@ -75,8 +87,10 @@ namespace PS3BluMote
 			SetForms();
             keyboard = new SendInputAPI.Keyboard(cbSms.Checked);
 
-            timerRepeat = new System.Timers.Timer { Interval = model.Settings.repeatinterval };
-	        timerRepeat.Elapsed += timerRepeat_Elapsed;
+			timerRepeat = new Timer(s => {
+				keyboard.sendKeysDown(keyboard.lastKeysDown);
+				keyboard.releaseLastKeys();
+			}, null, Timeout.Infinite, Timeout.Infinite);
 
 			var vendorId = int.Parse(txtVendorId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
 			var productId = int.Parse(txtProductId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
@@ -102,7 +116,11 @@ namespace PS3BluMote
 				cbStartup.Checked = true;
 			}
 
+	        cbCustomRepeatRate.Checked = model.Settings.usecustomdelay;
+	        txtRepeatDelay.Text = model.Settings.repeatdelay.ToString();
+	        txtRepeatDelay.Enabled = model.Settings.usecustomdelay;
             txtRepeatInterval.Text = model.Settings.repeatinterval.ToString();
+			txtRepeatInterval.Enabled = model.Settings.usecustomdelay;
 
             txtVendorId.Text = model.Settings.vendorid;
             txtProductId.Text = model.Settings.productid;
@@ -231,18 +249,14 @@ namespace PS3BluMote
             buttonTestOsd.Enabled = cbOSD.Checked;
         }
 
-        private void timerRepeat_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            keyboard.sendKeysDown(keyboard.lastKeysDown);
-            keyboard.releaseLastKeys();
-        }
-
         private void saveSettings()
         {
             // should use data bind?
             model.Settings.vendorid = txtVendorId.Text.ToLower();
             model.Settings.productid = txtProductId.Text.ToLower();
             model.Settings.smsinput = cbSms.Checked;
+	        model.Settings.usecustomdelay = cbCustomRepeatRate.Checked;
+	        model.Settings.repeatdelay = int.Parse(txtRepeatDelay.Text);
             model.Settings.repeatinterval = int.Parse(txtRepeatInterval.Text);
             model.Settings.debug = cbDebugMode.Checked;
             model.Settings.osd = cbOSD.Checked;
@@ -464,7 +478,22 @@ namespace PS3BluMote
             prc.Start();
         }
 
-        private void txtRepeatInterval_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		private void cbCustomRepeatRate_CheckedChanged(object sender, EventArgs e)
+		{
+			txtRepeatDelay.Enabled = cbCustomRepeatRate.Checked;
+			txtRepeatInterval.Enabled = cbCustomRepeatRate.Checked;
+		}
+		
+		private void txtRepeatDelay_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			try {
+				int i = int.Parse(txtRepeatDelay.Text);
+			} catch {
+				e.Cancel = true;
+			}
+		}
+
+		private void txtRepeatInterval_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
             {
@@ -716,7 +745,12 @@ namespace PS3BluMote
                     keyboard.releaseLastKeys();
                     Log.Debug("Keys repeat send on : { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
 
-                    timerRepeat.Enabled = true;
+	                if (!model.Settings.usecustomdelay) {
+		                timerRepeat.Change(KeyboardDelay, KeyboardRepeat);
+	                } else {
+						timerRepeat.Change(model.Settings.repeatdelay, model.Settings.repeatinterval);
+					}
+	                repeating = true;
                 } else {
                     keyboard.sendKeysDown(mapping.keysMapped);
                     Log.Debug("Keys down: { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
@@ -731,10 +765,10 @@ namespace PS3BluMote
         {
             Log.Debug("Button released");
 
-            if (timerRepeat.Enabled) {
+            if (repeating) {
                 Log.Debug("Keys repeat send off: { " + String.Join(",", keyboard.lastKeysDown.ToArray()) + " }");
-
-                timerRepeat.Enabled = false;
+	            timerRepeat.Change(Timeout.Infinite, Timeout.Infinite);
+                repeating = false;
                 return;
             }
 
@@ -829,7 +863,8 @@ namespace PS3BluMote
         }
         # endregion
 
-	    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+		private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
     }
 }
 

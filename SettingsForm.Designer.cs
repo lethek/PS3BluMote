@@ -58,9 +58,13 @@ namespace PS3BluMote
 			this.TabControl = new System.Windows.Forms.TabControl();
 			this.tabMappings = new System.Windows.Forms.TabPage();
 			this.groupBox5 = new System.Windows.Forms.GroupBox();
-			this.cbStartup = new System.Windows.Forms.CheckBox();
+			this.groupBox7 = new System.Windows.Forms.GroupBox();
+			this.txtRepeatDelay = new System.Windows.Forms.TextBox();
+			this.lblRepeatDelay = new System.Windows.Forms.Label();
+			this.cbCustomRepeatRate = new System.Windows.Forms.CheckBox();
 			this.txtRepeatInterval = new System.Windows.Forms.TextBox();
 			this.lblRepeatInterval = new System.Windows.Forms.Label();
+			this.cbStartup = new System.Windows.Forms.CheckBox();
 			this.llblOpenFolder = new System.Windows.Forms.LinkLabel();
 			this.cbDebugMode = new System.Windows.Forms.CheckBox();
 			this.gbAdvanced = new System.Windows.Forms.GroupBox();
@@ -137,6 +141,7 @@ namespace PS3BluMote
 			this.TabControl.SuspendLayout();
 			this.tabMappings.SuspendLayout();
 			this.groupBox5.SuspendLayout();
+			this.groupBox7.SuspendLayout();
 			this.gbAdvanced.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			this.tabOSD1.SuspendLayout();
@@ -210,19 +215,80 @@ namespace PS3BluMote
 			// 
 			// groupBox5
 			// 
+			this.groupBox5.Controls.Add(this.groupBox7);
 			this.groupBox5.Controls.Add(this.cbStartup);
-			this.groupBox5.Controls.Add(this.txtRepeatInterval);
-			this.groupBox5.Controls.Add(this.lblRepeatInterval);
 			this.groupBox5.Controls.Add(this.llblOpenFolder);
 			this.groupBox5.Controls.Add(this.cbDebugMode);
 			this.groupBox5.Controls.Add(this.gbAdvanced);
 			this.groupBox5.Controls.Add(this.cbSms);
 			this.groupBox5.Location = new System.Drawing.Point(293, 7);
 			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(272, 329);
+			this.groupBox5.Size = new System.Drawing.Size(272, 373);
 			this.groupBox5.TabIndex = 10;
 			this.groupBox5.TabStop = false;
 			this.groupBox5.Text = "Settings";
+			// 
+			// groupBox7
+			// 
+			this.groupBox7.Controls.Add(this.txtRepeatDelay);
+			this.groupBox7.Controls.Add(this.lblRepeatDelay);
+			this.groupBox7.Controls.Add(this.cbCustomRepeatRate);
+			this.groupBox7.Controls.Add(this.txtRepeatInterval);
+			this.groupBox7.Controls.Add(this.lblRepeatInterval);
+			this.groupBox7.Location = new System.Drawing.Point(6, 94);
+			this.groupBox7.Name = "groupBox7";
+			this.groupBox7.Size = new System.Drawing.Size(260, 97);
+			this.groupBox7.TabIndex = 24;
+			this.groupBox7.TabStop = false;
+			this.groupBox7.Text = "Repeat Rate";
+			// 
+			// txtRepeatDelay
+			// 
+			this.txtRepeatDelay.Location = new System.Drawing.Point(163, 44);
+			this.txtRepeatDelay.Name = "txtRepeatDelay";
+			this.txtRepeatDelay.Size = new System.Drawing.Size(46, 20);
+			this.txtRepeatDelay.TabIndex = 28;
+			this.txtRepeatDelay.Text = "500";
+			this.txtRepeatDelay.Validating += new System.ComponentModel.CancelEventHandler(this.txtRepeatDelay_Validating);
+			// 
+			// lblRepeatDelay
+			// 
+			this.lblRepeatDelay.AutoSize = true;
+			this.lblRepeatDelay.Location = new System.Drawing.Point(12, 47);
+			this.lblRepeatDelay.Name = "lblRepeatDelay";
+			this.lblRepeatDelay.Size = new System.Drawing.Size(132, 13);
+			this.lblRepeatDelay.TabIndex = 27;
+			this.lblRepeatDelay.Text = "Button repeat delay (in ms)";
+			// 
+			// cbCustomRepeatRate
+			// 
+			this.cbCustomRepeatRate.AutoSize = true;
+			this.cbCustomRepeatRate.Location = new System.Drawing.Point(12, 19);
+			this.cbCustomRepeatRate.Name = "cbCustomRepeatRate";
+			this.cbCustomRepeatRate.Size = new System.Drawing.Size(136, 17);
+			this.cbCustomRepeatRate.TabIndex = 26;
+			this.cbCustomRepeatRate.Text = "Use custom repeat rate";
+			this.toolTipAdvanced.SetToolTip(this.cbCustomRepeatRate, "When disabled, the system\'s keyboard repeat rate and delay are used instead.");
+			this.cbCustomRepeatRate.UseVisualStyleBackColor = true;
+			this.cbCustomRepeatRate.CheckedChanged += new System.EventHandler(this.cbCustomRepeatRate_CheckedChanged);
+			// 
+			// txtRepeatInterval
+			// 
+			this.txtRepeatInterval.Location = new System.Drawing.Point(163, 70);
+			this.txtRepeatInterval.Name = "txtRepeatInterval";
+			this.txtRepeatInterval.Size = new System.Drawing.Size(46, 20);
+			this.txtRepeatInterval.TabIndex = 25;
+			this.txtRepeatInterval.Text = "250";
+			this.txtRepeatInterval.Validating += new System.ComponentModel.CancelEventHandler(this.txtRepeatInterval_Validating);
+			// 
+			// lblRepeatInterval
+			// 
+			this.lblRepeatInterval.AutoSize = true;
+			this.lblRepeatInterval.Location = new System.Drawing.Point(12, 73);
+			this.lblRepeatInterval.Name = "lblRepeatInterval";
+			this.lblRepeatInterval.Size = new System.Drawing.Size(144, 13);
+			this.lblRepeatInterval.TabIndex = 24;
+			this.lblRepeatInterval.Text = "Button repeat interval (in ms):";
 			// 
 			// cbStartup
 			// 
@@ -235,28 +301,10 @@ namespace PS3BluMote
 			this.cbStartup.UseVisualStyleBackColor = true;
 			this.cbStartup.CheckedChanged += new System.EventHandler(this.cbStartup_CheckedChanged);
 			// 
-			// txtRepeatInterval
-			// 
-			this.txtRepeatInterval.Location = new System.Drawing.Point(171, 118);
-			this.txtRepeatInterval.Name = "txtRepeatInterval";
-			this.txtRepeatInterval.Size = new System.Drawing.Size(46, 20);
-			this.txtRepeatInterval.TabIndex = 20;
-			this.txtRepeatInterval.Text = "500";
-			this.txtRepeatInterval.Validating += new System.ComponentModel.CancelEventHandler(this.txtRepeatInterval_Validating);
-			// 
-			// lblRepeatInterval
-			// 
-			this.lblRepeatInterval.AutoSize = true;
-			this.lblRepeatInterval.Location = new System.Drawing.Point(6, 122);
-			this.lblRepeatInterval.Name = "lblRepeatInterval";
-			this.lblRepeatInterval.Size = new System.Drawing.Size(144, 13);
-			this.lblRepeatInterval.TabIndex = 19;
-			this.lblRepeatInterval.Text = "Button repeat interval (in ms):";
-			// 
 			// llblOpenFolder
 			// 
 			this.llblOpenFolder.AutoSize = true;
-			this.llblOpenFolder.Location = new System.Drawing.Point(22, 91);
+			this.llblOpenFolder.Location = new System.Drawing.Point(187, 72);
 			this.llblOpenFolder.Name = "llblOpenFolder";
 			this.llblOpenFolder.Size = new System.Drawing.Size(79, 13);
 			this.llblOpenFolder.TabIndex = 17;
@@ -283,7 +331,7 @@ namespace PS3BluMote
 			this.gbAdvanced.Controls.Add(this.txtProductId);
 			this.gbAdvanced.Controls.Add(this.lblVendorId);
 			this.gbAdvanced.Controls.Add(this.lblProductId);
-			this.gbAdvanced.Location = new System.Drawing.Point(6, 154);
+			this.gbAdvanced.Location = new System.Drawing.Point(6, 193);
 			this.gbAdvanced.Name = "gbAdvanced";
 			this.gbAdvanced.Padding = new System.Windows.Forms.Padding(6, 7, 6, 7);
 			this.gbAdvanced.Size = new System.Drawing.Size(260, 169);
@@ -363,7 +411,7 @@ namespace PS3BluMote
 			this.groupBox4.Controls.Add(this.buttonCopy);
 			this.groupBox4.Location = new System.Drawing.Point(6, 7);
 			this.groupBox4.Name = "groupBox4";
-			this.groupBox4.Size = new System.Drawing.Size(266, 329);
+			this.groupBox4.Size = new System.Drawing.Size(266, 373);
 			this.groupBox4.TabIndex = 9;
 			this.groupBox4.TabStop = false;
 			this.groupBox4.Text = "Mappings";
@@ -383,7 +431,7 @@ namespace PS3BluMote
 			this.lbApps.FormattingEnabled = true;
 			this.lbApps.Location = new System.Drawing.Point(6, 20);
 			this.lbApps.Name = "lbApps";
-			this.lbApps.Size = new System.Drawing.Size(173, 303);
+			this.lbApps.Size = new System.Drawing.Size(173, 342);
 			this.lbApps.TabIndex = 0;
 			this.lbApps.SelectedIndexChanged += new System.EventHandler(this.lbApps_SelectedIndexChanged);
 			// 
@@ -439,7 +487,7 @@ namespace PS3BluMote
 			// 
 			// buttonDelete
 			// 
-			this.buttonDelete.Location = new System.Drawing.Point(185, 297);
+			this.buttonDelete.Location = new System.Drawing.Point(185, 337);
 			this.buttonDelete.Name = "buttonDelete";
 			this.buttonDelete.Size = new System.Drawing.Size(75, 25);
 			this.buttonDelete.TabIndex = 6;
@@ -1027,6 +1075,8 @@ namespace PS3BluMote
 			this.tabMappings.PerformLayout();
 			this.groupBox5.ResumeLayout(false);
 			this.groupBox5.PerformLayout();
+			this.groupBox7.ResumeLayout(false);
+			this.groupBox7.PerformLayout();
 			this.gbAdvanced.ResumeLayout(false);
 			this.gbAdvanced.PerformLayout();
 			this.groupBox4.ResumeLayout(false);
@@ -1109,8 +1159,6 @@ namespace PS3BluMote
         private System.Windows.Forms.CheckBox cbOSD;
         private System.Windows.Forms.GroupBox groupBox4;
 		private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.TextBox txtRepeatInterval;
-        private System.Windows.Forms.Label lblRepeatInterval;
         private System.Windows.Forms.Label lblCopyright;
         private System.Windows.Forms.LinkLabel llblOpenFolder;
         private System.Windows.Forms.CheckBox cbDebugMode;
@@ -1139,5 +1187,11 @@ namespace PS3BluMote
         private System.Windows.Forms.RadioButton rbOsdRemoteButtonPressAlways;
         private System.Windows.Forms.CheckBox cbOsdRemoteButtonPress;
 		private System.Windows.Forms.CheckBox cbStartup;
+		private System.Windows.Forms.GroupBox groupBox7;
+		private System.Windows.Forms.TextBox txtRepeatDelay;
+		private System.Windows.Forms.Label lblRepeatDelay;
+		private System.Windows.Forms.CheckBox cbCustomRepeatRate;
+		private System.Windows.Forms.TextBox txtRepeatInterval;
+		private System.Windows.Forms.Label lblRepeatInterval;
 	}
 }

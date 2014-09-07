@@ -38,6 +38,8 @@ namespace PS3BluMote
         public string vendorid;
         public string productid;
         public bool smsinput;
+	    public bool usecustomdelay;
+	    public int repeatdelay;
         public int repeatinterval;
         public bool debug;
         public string isound;
@@ -49,7 +51,9 @@ namespace PS3BluMote
             vendorid = "0x054c";
             productid = "0x0306";
             smsinput = false;
-            repeatinterval = 500;
+	        usecustomdelay = false;
+	        repeatdelay = 500;
+            repeatinterval = 250;
             debug = false;
             isound = "";
             rsound = "";
