@@ -1,4 +1,5 @@
 ﻿using System;
+using NLog;
 
 namespace PS3BluMote
 {
@@ -27,8 +28,6 @@ namespace PS3BluMote
 		public void SetRemote(int vendorId, int productId)
 		{
 			try {
-				//var vendorId = int.Parse(txtVendorId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
-				//var productId = int.Parse(txtProductId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
 				Remote = new PS3Remote(vendorId, productId);
 
 				Remote.ButtonDown += Remote_ButtonDown;
@@ -42,7 +41,8 @@ namespace PS3BluMote
 
 				Remote.Connect();
 
-			} catch {
+			} catch (Exception ex) {
+				Log.Error(ex.ToString(), ex);
 				//MessageBox.Show(
 				//	"An error occured whilst attempting to load the remote.",
 				//	"PS3BluMote: Remote error!",
@@ -55,18 +55,20 @@ namespace PS3BluMote
 
 		private void Remote_ButtonDown(object sender, ButtonData e)
 		{
-			throw new NotImplementedException();
+			//TODO: start sending keypresses
 		}
 
 
 		private void Remote_ButtonReleased(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			//TODO: stop sending keypresses
 		}
 
 
 		protected ModelXml Model;
 		protected PS3Remote Remote;
+
+		private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
 	}
 

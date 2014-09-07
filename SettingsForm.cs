@@ -69,6 +69,8 @@ namespace PS3BluMote
 			remoteService.OnBatteryLifeChanged += remoteService_OnBatteryLifeChanged;
 			remoteService.OnConnected += remoteService_OnConnected;
 			remoteService.OnDisconnected += remoteService_OnDisconnected;
+	        remoteService.OnButtonDown += remoteService_OnButtonDown;
+			remoteService.OnButtonReleased += remoteService_OnButtonReleased;
 
 			SetForms();
             keyboard = new SendInputAPI.Keyboard(cbSms.Checked);
@@ -667,22 +669,20 @@ namespace PS3BluMote
         # endregion
 
         # region ### remote ###
-        private void remote_ButtonDown(object sender, ButtonData e)
+        private void remoteService_OnButtonDown(object sender, ButtonData e)
         {
             Log.Debug("Button down: " + e.Button.ToString());
 
             ButtonMapping mapping = null;
 
-            StringBuilder showString = new StringBuilder("Remote Button is Pressed");
+            var showString = new StringBuilder("Remote Button is Pressed");
             string activeWindowTitle = GetActiveWindowTitle();
             if (activeWindowTitle == null) activeWindowTitle = "";
             if (cbOsdActiveWindowTitle.Checked && activeWindowTitle != "") showString.Append("\n" + activeWindowTitle);
 
-            foreach (AppNode app in model.Mappings)
-            {
+            foreach (AppNode app in model.Mappings) {
                 bool ignoreCase = !app.caseSensitive;
-                if (Regex.IsMatch(activeWindowTitle, app.condition, (RegexOptions)(ignoreCase ? 1 : 0)))
-                {
+                if (Regex.IsMatch(activeWindowTitle, app.condition, (RegexOptions)(ignoreCase ? 1 : 0))) {
                     mapping = app.buttonMappings[(int)e.Button];
                     Log.Debug("Matched: {" + activeWindowTitle + "} {" + app.name + "}");
                     if (cbOsdMappingName.Checked && app.name != "")
@@ -696,13 +696,10 @@ namespace PS3BluMote
             if (cbOsdPressedRemoteButton.Checked)
                 showString.Append("\n" + e.Button.ToString());
 
-            if (mapping == null)
-            {
+            if (mapping == null) {
                 Log.Debug("Keys down: { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
                 Log.Debug("Keys unmatch: Active App Window Title {" + activeWindowTitle + "}");
-            }
-            else
-            {
+            } else {
                 if (cbOsdAssignedKey.Checked)
                     if (e.Button.ToString() != "")
                         showString.Append(": " + mapping.joinedKeyMapped.Replace(",", " + "));
@@ -714,16 +711,13 @@ namespace PS3BluMote
                 if (cbOsdRemoteButtonPress.Checked && rbOsdRemoteButtonPressAssigned.Checked && mapping.keysMapped != null)
                     ShowOsd(showString.ToString());
 
-                if (mapping.repeat)
-                {
+                if (mapping.repeat) {
                     keyboard.sendKeysDown(mapping.keysMapped);
                     keyboard.releaseLastKeys();
                     Log.Debug("Keys repeat send on : { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
 
                     timerRepeat.Enabled = true;
-                }
-                else
-                {
+                } else {
                     keyboard.sendKeysDown(mapping.keysMapped);
                     Log.Debug("Keys down: { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
                 }
@@ -733,12 +727,11 @@ namespace PS3BluMote
                 ShowOsd(showString.ToString());
         }
 
-        private void remote_ButtonReleased(object sender, EventArgs e)
+        private void remoteService_OnButtonReleased(object sender, EventArgs e)
         {
             Log.Debug("Button released");
 
-            if (timerRepeat.Enabled)
-            {
+            if (timerRepeat.Enabled) {
                 Log.Debug("Keys repeat send off: { " + String.Join(",", keyboard.lastKeysDown.ToArray()) + " }");
 
                 timerRepeat.Enabled = false;
