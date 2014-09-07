@@ -301,7 +301,7 @@ namespace PS3BluMote
 			this.lblRemoteCodes.TabIndex = 3;
 			this.lblRemoteCodes.Text = "Official Sony PS3 Blutetooth remote:\r\n    PID: 0x0306    VID: 0x054c\r\nSMK Blu-Lin" +
     "k VP3700:\r\n    PID: 0x0306    VID: 0x0609\r\nLogitech Harmony (with PS3 Adapter):\r" +
-    "\n    PID: 0x0306    VID: 0x046d";
+    "\n    PID: 0xc129    VID: 0x046d";
 			// 
 			// txtVendorId
 			// 

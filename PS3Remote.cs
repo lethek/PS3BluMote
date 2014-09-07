@@ -156,7 +156,7 @@ namespace PS3BluMote
 		private void timerFindRemote_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			if (_hidRemote == null) {
-				Log.Debug("Searching for remote");
+				Log.Debug("Searching for remote: 0x{0:X4}, 0x{1:X4}", _vendorId, _productId);
 				_hidRemote = HidDevices.Enumerate(_vendorId, _productId).FirstOrDefault();
 
 				if (_hidRemote != null) {
