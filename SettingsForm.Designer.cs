@@ -323,6 +323,7 @@ namespace PS3BluMote
 			this.cbDebugMode.TabIndex = 16;
 			this.cbDebugMode.Text = "Debug mode (logging enabled)";
 			this.cbDebugMode.UseVisualStyleBackColor = true;
+			this.cbDebugMode.CheckedChanged += new System.EventHandler(this.cbDebugMode_CheckedChanged);
 			// 
 			// gbAdvanced
 			// 

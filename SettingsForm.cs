@@ -85,6 +85,9 @@ namespace PS3BluMote
 			remoteService.OnButtonReleased += remoteService_OnButtonReleased;
 
 			SetForms();
+
+			SetLoggingEnabled(model.Settings.debug);
+
             keyboard = new SendInputAPI.Keyboard(cbSms.Checked);
 
 			timerRepeat = new Timer(s => {
@@ -300,6 +303,19 @@ namespace PS3BluMote
 
             model.Save();
         }
+
+		private void SetLoggingEnabled(bool enable)
+		{
+			if (enable) {
+				while (!LogManager.IsLoggingEnabled()) {
+					LogManager.EnableLogging();
+				}
+			} else {
+				while (LogManager.IsLoggingEnabled()) {
+					LogManager.DisableLogging();
+				}
+			}
+		}
         # endregion
 
         # region ### form events ###
@@ -468,6 +484,11 @@ namespace PS3BluMote
 			} else if (key.GetValue("PS3BlueMote") != null) {
 				key.DeleteValue("PS3BluMote");
 			}
+		}
+
+		private void cbDebugMode_CheckedChanged(object sender, EventArgs e)
+		{
+			SetLoggingEnabled(cbDebugMode.Checked);
 		}
 
         private void llblOpenFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
